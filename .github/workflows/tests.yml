@@ -41,4 +41,3 @@ jobs:
         
       - name: Test
         run: npm run test -- --no-watch
-          echo test, and deploy your project.
