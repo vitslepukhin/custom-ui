@@ -15,28 +15,28 @@ import {
 
 export class IfLoaderContext<T = unknown> {
   public $implicit: T = null;
-  public appIfLoader: T = null;
+  public libIfLoader: T = null;
 }
 
 @Directive({
-  selector: '[appIfLoader]',
+  selector: '[libIfLoader]',
 })
 export class IfLoaderDirective<T> {
   @Input()
-  public set appIfLoader(condition: T) {
-    this.context.$implicit = this.context.appIfLoader = condition;
+  public set libIfLoader(condition: T) {
+    this.context.$implicit = this.context.libIfLoader = condition;
     this.updateView();
   }
 
   @Input()
-  set appIfLoaderThen(templateRef: TemplateRef<IfLoaderContext<T>> | null) {
+  set libIfLoaderThen(templateRef: TemplateRef<IfLoaderContext<T>> | null) {
     this.thenTemplateRef = templateRef;
     this.viewRef = null;
     this.updateView();
   }
 
   @Input()
-  public set appIfLoaderFallbackTemplate(
+  public set libIfLoaderFallbackTemplate(
     templateRef: TemplateRef<IfLoaderContext<T>> | null
   ) {
     this.fallbackTemplateRef = templateRef;
@@ -58,7 +58,7 @@ export class IfLoaderDirective<T> {
     this.thenTemplateRef = templateRef;
   }
 
-  private updateView() {
+  private updateView(): void {
     if (this.context.$implicit) {
       if (!this.viewRef) {
         this.viewContainerRef.clear();

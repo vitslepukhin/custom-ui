@@ -1,4 +1,4 @@
- `*appIfLoader` is a structural directive that conditionally includes a template based on the value of
+ `*libIfLoader` is a structural directive that conditionally includes a template based on the value of
   an expression.
   When the expression evaluates to true, Angular renders the template
   provided in a `then` clause, and when false or null,

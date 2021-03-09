@@ -28,7 +28,7 @@ describe('IfLoaderDirective', () => {
   it(
     'should work in a template attribute',
     waitForAsync(() => {
-      const template = '<span *appIfLoader="booleanCondition">hello</span>';
+      const template = '<span *libIfLoader="booleanCondition">hello</span>';
       fixture = createTestComponent(template);
       fixture.detectChanges();
       expect(fixture.debugElement.queryAll(By.css('span')).length).toEqual(1);
@@ -40,7 +40,7 @@ describe('IfLoaderDirective', () => {
     'should work on a template element',
     waitForAsync(() => {
       const template =
-        '<ng-template [appIfLoader]="booleanCondition">hello2</ng-template>';
+        '<ng-template [libIfLoader]="booleanCondition">hello2</ng-template>';
       fixture = createTestComponent(template);
       fixture.detectChanges();
       expect(fixture.nativeElement.innerHTML).toContain('hello2');
@@ -50,7 +50,7 @@ describe('IfLoaderDirective', () => {
   it(
     'should toggle node when condition changes',
     waitForAsync(() => {
-      const template = '<span *appIfLoader="booleanCondition">hello</span>';
+      const template = '<span *libIfLoader="booleanCondition">hello</span>';
       fixture = createTestComponent(template);
       getComponent().booleanCondition = false;
       fixture.detectChanges();
@@ -70,10 +70,10 @@ describe('IfLoaderDirective', () => {
   );
 
   it(
-    'should handle nested appIfLoader correctly',
+    'should handle nested libIfLoader correctly',
     waitForAsync(() => {
       const template =
-        '<div *appIfLoader="booleanCondition"><span *appIfLoader="nestedBooleanCondition">hello</span></div>';
+        '<div *libIfLoader="booleanCondition"><span *libIfLoader="nestedBooleanCondition">hello</span></div>';
 
       fixture = createTestComponent(template);
 
@@ -105,12 +105,12 @@ describe('IfLoaderDirective', () => {
   );
 
   it(
-    'should update several nodes with appIfLoader',
+    'should update several nodes with libIfLoader',
     waitForAsync(() => {
       const template =
-        '<span *appIfLoader="numberCondition + 1 >= 2">helloNumber</span>' +
-        '<span *appIfLoader="stringCondition == \'foo\'">helloString</span>' +
-        '<span *appIfLoader="functionCondition(stringCondition, numberCondition)">helloFunction</span>';
+        '<span *libIfLoader="numberCondition + 1 >= 2">helloNumber</span>' +
+        '<span *libIfLoader="stringCondition == \'foo\'">helloString</span>' +
+        '<span *libIfLoader="functionCondition(stringCondition, numberCondition)">helloFunction</span>';
 
       fixture = createTestComponent(template);
 
@@ -136,7 +136,7 @@ describe('IfLoaderDirective', () => {
   it(
     'should not add the element twice if the condition goes from truthy to truthy',
     waitForAsync(() => {
-      const template = '<span *appIfLoader="numberCondition">hello</span>';
+      const template = '<span *libIfLoader="numberCondition">hello</span>';
 
       fixture = createTestComponent(template);
 
@@ -160,7 +160,7 @@ describe('IfLoaderDirective', () => {
     it(
       'should support dynamic LoadingIndicatorComponent',
       waitForAsync(() => {
-        const template = '<span *appIfLoader="booleanCondition">hello</span>';
+        const template = '<span *libIfLoader="booleanCondition">hello</span>';
 
         fixture = createTestComponent(template);
 
@@ -169,7 +169,7 @@ describe('IfLoaderDirective', () => {
         expect(fixture.nativeElement.innerHTML).not.toContain('hello');
         expect(fixture.nativeElement.innerHTML).toContain('loader');
         expect(
-          fixture.debugElement.queryAll(By.css('loader-cmp')).length
+          fixture.debugElement.queryAll(By.css('lib-loader-cmp')).length
         ).toEqual(1);
       })
     );
@@ -178,7 +178,7 @@ describe('IfLoaderDirective', () => {
       'should support fallbackTemplate',
       waitForAsync(() => {
         const template =
-          '<span *appIfLoader="booleanCondition; fallbackTemplate fallbackBlock">TRUE</span>' +
+          '<span *libIfLoader="booleanCondition; fallbackTemplate fallbackBlock">TRUE</span>' +
           '<ng-template #fallbackBlock>FALSE</ng-template>';
 
         fixture = createTestComponent(template);
@@ -196,7 +196,7 @@ describe('IfLoaderDirective', () => {
       'should support binding to variable using let',
       waitForAsync(() => {
         const template =
-          '<span *appIfLoader="booleanCondition; fallbackTemplate fallbackBlock; let v">{{v}}</span>' +
+          '<span *libIfLoader="booleanCondition; fallbackTemplate fallbackBlock; let v">{{v}}</span>' +
           '<ng-template #fallbackBlock let-v>{{v}}</ng-template>';
 
         fixture = createTestComponent(template);
@@ -214,7 +214,7 @@ describe('IfLoaderDirective', () => {
       'should support binding to variable using as',
       waitForAsync(() => {
         const template =
-          '<span *appIfLoader="booleanCondition as v; fallbackTemplate fallbackBlock">{{v}}</span>' +
+          '<span *libIfLoader="booleanCondition as v; fallbackTemplate fallbackBlock">{{v}}</span>' +
           '<ng-template #fallbackBlock let-v>{{v}}</ng-template>';
 
         fixture = createTestComponent(template);
@@ -230,17 +230,17 @@ describe('IfLoaderDirective', () => {
   });
 });
 
-@Component({ selector: 'loader-cmp', template: 'loader' })
+@Component({ selector: 'lib-loader-cmp', template: 'loader' })
 class LoaderComponent {}
 
-@Component({ selector: 'test-cmp', template: '' })
+@Component({ selector: 'lib-test-cmp', template: '' })
 class TestComponent {
   public booleanCondition: boolean = true;
   public nestedBooleanCondition: boolean = true;
   public numberCondition: number = 1;
   public stringCondition: string = 'foo';
-  public functionCondition: Function = (s: any, n: any): boolean =>
-    s === 'foo' && n === 1;
+  public functionCondition = (s: any, n: any): boolean =>
+    s === 'foo' && n === 1
 }
 
 function createTestComponent(
